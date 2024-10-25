@@ -1,0 +1,514 @@
+<h1 id="structures">SDMX Structures</h1>
+<h2 id="terminology">Terminology</h2>
+
+<h3 id="maintainable">Maintainable</h3>
+<p>
+All structures submitted to or queried from a registry are maintainable structures.  A maintainable may contain sub-structures, but a maintainable is the highest level of containership.  A maintainable cannot live inside another structure type, and structures cannot be submitted to the registry unless they are a maintainable, or defined in a maintainable.  This is a rather complex statement, which is easier explained using a real world example: 
+</p>
+<ul>
+  <li>A Codelist is a maintainable structure, and as such it can be submitted to the Fusion Registry.</li>  
+  <li>A Codelist can contain codes, which are not maintainable.</li>  
+  <li>A codelist has no parent structure type, and cannot contain other Codelists.</li>
+  <li>Codes cannot be submitted to the registry on their own, they must be defined inside a Codelist.</li>
+</ul>
+<p>
+So a maintainable structure can be thought of as a container of information.  The information cannot be maintained outside of its maintainable parent, hence the term <i>Maintainable</i>.
+</p>
+<p>
+A maintainable structure has a reference to the maintenance agency who 'owns' the structure.  It has a mandatory version, defaulting to 1.0 and a mandatory identifier.  The combination of structure type, agency Id, Id, and version can be used to uniquely identify any maintainable structure in SDMX.
+</p>
+<p>
+All the maintainable structure types in SDMX are listed below:
+</p>
+
+<p>
+  <ul>
+    <li><a href="#catscheme">Category Scheme</a></li>
+    <li><a href="#categorisation">Categorisation</a></li>
+    <li><a href="#codelist">Codelist</a></li>
+    <li><a href="#conceptscheme">Concept Scheme</a></li>
+    <li><a href="#constraint">Constraint</a></li>
+    <li><a href="#dsd">Data Structure Definition (DSD)</a></li>
+    <li><a href="#datafkiw">Dataflow</a></li>
+    <li><a href="#hcl">Hierarchical Codelist</a></li>
+    <li><a href="#msd">Metadata Structure Definition (MSD)</a></li>
+    <li><a href="#metadataflow">Metadataflow</a></li>
+    <li><a href="#orgscheme">Organisation Scheme</a></li>
+    <li><a href="#reportingtax">Reporting Taxonomy</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#structureset">Structure Set</a></li>
+    <li><a href="#prov">Provision Agreement</a></li>
+  </ul>
+</p>
+
+<p>
+How they link together in the model, including some of the Identifiable components of which they are composed, is shown in the diagram below. Note that this diagram does not include the Metadata Structure Definition which is shown later.
+</p>
+
+<figure id="urn1" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/structuremodel.png" data-lightbox="lightbox" data-title="Showing a UML model of the SDMX Structure Types">
+	<img src="/img/sdmx/structures/structuremodel.png" style="width:650px"></img>
+  </a>
+  <figcaption class="caption">Showing a UML model of the SDMX Structure Types</figcaption>
+</figure>
+
+<h3 id="identifiable">Identifiable</h3>
+<p>
+An identifiable structure is one can be uniquely identified in SDMX by using a URN.
+</p>
+<p>
+A URN (Uniform Resource Name) is a specialised form of URI (Uniform Resource Identifier).  A URI is a string of characters used to identify the name of a web resource.  URNs are used to uniquely identify a specific SDMX artefact.  
+</p>
+<p>
+SDMX defines the URN syntax and each URN is constructed by concatenating the structure type, maintenance agency, structure version, and id of the structure.  
+</p>
+<p>
+An example URN for a Codelist is given below:
+</p>
+
+<figure id="urn1" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/urn1.png" data-lightbox="lightbox" data-title="Showing the URN syntax for a maintainable structure">
+	<img src="/img/sdmx/structures/urn1.png" style="width:650px"></img>
+  </a>
+  <figcaption class="caption">Showing the URN syntax for a maintainable structure</figcaption>
+</figure>
+
+<p>
+All maintainable structures are identifiable, as they all have a structure type, agency id, id, and version.  This means each maintainable structure can be uniquely identified in SDMX using the URN syntax.
+</p>
+<p>
+There are also identifiable structures in SDMX which are not maintainable.  If they are identifiable they have a mandatory id, if they are not maintainable then they must live inside a maintainable.  The maintainable parent is therefore used to derive the URN.  An example of an identifiable which is not maintainable is a Code, which lives inside a Codelist.  The URN syntax for a code is shown below, which simple attaches the code id to the end of the Codelist URN.
+</p>
+
+<figure id="urn2" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/urn2.png" data-lightbox="lightbox" data-title="Showing the URN syntax for an identifiable structure">
+	<img src="/img/sdmx/structures/urn2.png" style="width:650px"></img>
+  </a>
+  <figcaption class="caption">Showing the URN syntax for an identifiable structure</figcaption>
+</figure>
+
+<h2 id="sref">Structure References</h2>
+<p>
+In SDMX re-use of information is obtained by providing the URN mechanism allowing structures to reference other structures.  This re-use of information allows structures, such as Codelists to be defined once, and then referenced by other structures that need to use them. 
+</p>
+<p>
+The decoupled nature provided by the referencing mechanism means that one structure can be maintained independently of another.  For example it is possible to maintain a Data Provider: which contains a name; description; and contact details, independently of a Constraint which can reference a Data Provider.  A Constraint is used to place restrictions on the allowable content of a Dataset, and when attached to a Data Provider the restrictions apply to any Data Set provided by the Data Provider.  By removing the Constraint, the restrictions will cease to exist.
+</p>
+<p>
+A good example of re-use can be seen in the SDMX Global Registry, which contains re-useable Codelists and Concept Schemes provided by the SDMX Agency.  It is possible to define new structures which make use of these pre-defined structures by referencing them.
+</p>          
+                    	
+<h2 id="catscheme">Category Scheme</h2>
+<p>
+A category scheme is a container for categories.  Categories are used to classify any other structure in SDMX.  
+</p>
+<p>
+Categories are typically used to classify <a href="#dataflow">Dataflows</a>.  An example category hierarchy is given below.
+</p>
+
+<figure id="catscheme" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/catscheme.png" data-lightbox="lightbox" data-title="Showing a category hierarchy used in a dissemination system">
+	<img src="/img/sdmx/structures/catscheme.png" style="width:300px"></img>
+  </a>
+  <figcaption class="caption">Showing a category hierarchy used in a dissemination system</figcaption>
+</figure>
+
+<h2 id="categorisation">Categorisation</h2>
+<p>
+A categorisation links a category in a <a href="#catscheme">Category Scheme</a> to any other <a href="#identifiable">Identifiable</a> structure in SDMX.  Typically in a dissemination environment a Categorisation would link a Category to a <a href="#dataflow">Dataflow</a>.  It is possible to use a single Category to classify multiple structures by using many Categorisations.
+</p>
+<p>
+For Example the following selected Category:
+</p>
+
+<figure id="catscheme" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/catscheme.png" data-lightbox="lightbox" data-title="Showing a category hierarchy used in a dissemination system">
+	<img src="/img/sdmx/structures/catscheme.png" style="width:300px"></img>
+  </a>
+  <figcaption class="caption">Showing a category hierarchy used in a dissemination system</figcaption>
+</figure>
+
+<p>
+Could be used to link to the following 4 Dataflows, with a separate categorisation required for each link:
+</p>
+<ol>
+  <li>Population by Household Status and Legal Marital Status</li>
+  <li>Population by Household Status and Educational Attainment</li>
+  <li>Population by Household Status and Status in Employment</li>
+  <li>Population by Household Status and Size of the Locality</li>
+</ol>
+
+
+<h2 id="codelist">Codelist</h2>
+<p>
+A codelist is a container for codes (classifications). Codes associate an identifier with a name and optional description.  
+</p>
+<p>
+An example codelist is shown below.
+</p>
+<figure id="codelist" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/codelist.png" data-lightbox="lightbox" data-title="Showing an example codelist">
+	<img src="/img/sdmx/structures/codelist.png" style="width:550px"></img>
+  </a>
+  <figcaption class="caption">Showing an example codelist</figcaption>
+</figure>
+
+<p>
+It should be noted that code ids are unique in a Codelist, but the same code id may be used in a separate codelist.  An example is code 'A' used to represent 'Annual' in the above example, is also used to represent 'Agriculture, forestry and fishing' as shown below.
+</p>
+
+<figure id="codelist2" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/codelist2.png" data-lightbox="lightbox" data-title="Showing an example codelist">
+	<img src="/img/sdmx/structures/codelist2.png" style="width:300px"></img>
+  </a>
+  <figcaption class="caption">Showing an example codelist</figcaption>
+</figure>
+
+<p>
+Codelists are referenced by structures in order to give the structure an allowable enumeration of content.  For example a Dimension can optionally reference a Codelist in order to restrict allowable content for the Dimension.   
+</p>
+<h4>Code Hierarchies</h4>
+<p>
+It is possible to define a parent code for any given code in a codelist.  The parent code must exist in the same codelist, and a code can only have one parent.  By defining parent codes simple code hierarchies can be defined in a single Codelist.
+</p>
+<p>
+SDMX provides a mechanism to create more complex hierarchies, which allow the same code to be defined more than one, in multiple hierarchies.  In addition a complex hierarchy can also include codes from multiple codelists.  To create more complex hierarchies, see <a href="#hcl">Hierarchical Codelist</a>. 
+</p>
+
+<h2 id="conceptscheme">Concept Scheme</h2>
+<p>A concept scheme is a container for concepts. A concept associates an identifier with a name and optional description. Their purpose is to provide other structures a semantic meaning. </p>
+
+<p>A Data Structure Definition (DSD) provides a good example of how Concepts are used. A DSD contains one or more Dimensions. Dimensions do not have names or descriptions, instead they provide a reference to a Concept which gives this information. In order to get a human readable name for a Dimension, the referenced Concept must first be obtained.</p>
+
+<p>Concepts may be referenced by multiple structures in SDMX, and therefore provide re-useable mechanism for giving meaning to structures.</p>
+
+<p>An example of a Data Structure’s decoded Dimension labels is shown in the image below.</p>
+
+
+<figure title="Click to Enlarge">
+  <a href="/img/sdmx/structures/dsd.png" data-lightbox="lightbox" data-title="Showing the dimensions in a Data Structure Definition (DSD).  Each dimension takes its name from the Concept it references">
+	<img src="/img/sdmx/structures/dsd.png" style="width:250px"></img>
+  </a>
+  <figcaption class="caption">Showing the dimensions in a Data Structure Definition (DSD).  Each dimension takes its name from the Concept it references</figcaption>
+</figure>
+
+<p>
+Concepts can optionally provide a link to a Codelist.  The Codelist referenced by the Concept will be used as a default allowable enumeration of values if there is no alternative supplied.  For example the concept for Frequency may reference a Codelist containing Frequency Codes, a Dimension which references the Frequency Concept will use the Frequency Codelist if it does not itself specify a different codelist to use. 
+</p>
+<p>
+SDMX provides a standard list of common concepts, which is termed the Cross Domain Concepts.  The concept scheme includes over 100 concepts and includes concepts such as Frequency, Reference Area, Time period, Observation Status, Observation Confidentiality  
+</p>
+
+<h2 id="constraint">Constraint</h2>
+<p>
+A constraint is used to further restrict allowable content for data reporting and can attach to one of the following structures:
+</p>
+
+<ol>
+  <li>Data Structure Definition</li>
+  <li>Dataflow</li>
+  <li>Data Provider</li>
+  <li>Provision Agreement</li>
+</ol>
+
+<p>
+Data is reported against a Provision Agreement and the restrictions on the reported data are derived by merging the constraints for the Dataflow, Data Structure Definition, Data Provider and Provision Agreement.  An example is given below:
+</p>
+
+<figure id="constraint" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/constraint.png" data-lightbox="lightbox" data-title="Showing constraints applied at various levels of the information model">
+	<img src="/img/sdmx/structures/constraint.png" style="width:550px"></img>
+  </a>
+  <figcaption class="caption">Showing constraints applied at various levels of the information model</figcaption>
+</figure>
+
+<p>Content Constraints can restrict content in one of two ways:
+<ol>
+  <li>It can further restrict a codelist by defining a subset of permitted or restricted codes in the list.</li>
+  <li>It can define full or partial series keys which are allowed or restricted.</li>
+</ol>
+</p>
+
+<h2 id="dsd">Data Structure Definition</h2>
+<p>
+A Data Structure Definition (DSD) provides a template which describes the structure of related datasets in terms of their dimensionality and coding schemes.  
+</p>
+<p>
+An SDMX dataset must conform to a DSD and can only be interpreted by using the DSD and related Concepts and Codelists to decode the dataset information.
+</p>
+<p>
+For example a series in a dataset may be defined by the following series key:
+</p>
+<p>
+  <i>A:BN_KLT_DINV_CD:AUS </i>
+</p>
+<p>
+Using the DSD an application could decode this key to:
+</p>
+
+<table class="table table-striped"> 
+<tbody>
+<tr>
+<td valign="top" ><p><b>Dimension Name (en)</b></p></td>
+<td valign="top" ><p><b>Code Id</b></p></td>
+<td valign="top" ><p><b>Code Name (en)</b></p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p><b>Frequency</b></p></td>
+<td valign="top" ><p>A</p></td>
+<td valign="top" ><p>Annual</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p><b>Series</b></p></td>
+<td valign="top" ><p>BN_KLT_DINV_CD</p></td>
+<td valign="top" ><p>Foreign direct investment, net (BoP, current US$)</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p><b>Reference Area</b></p></td>
+<td valign="top" ><p>AUS</p></td>
+<td valign="top" ><p>Australia</p></td>
+</tr>
+
+</tbody>
+</table>
+
+<p>
+An example DSD (with Ids decoded to their English labels) is shown below.
+</p>
+
+
+<figure id="dsd2" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/dsd2.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/structures/dsd2.png" style="width:650px"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+
+<h2 id="dataflow">Dataflow</h2>
+<p>
+A Dataflow simply has an id, provides a name, and references a <a href="#dsd">Data Structure Definition</a> (DSD).  
+</p>
+<p>
+Data is disseminated against a Dataflow and must conform to the template defined by the <a href="#dsd">DSD</a> that the Dataflow references.
+</p>
+<p>
+Having this additional layer allows multiple Dataflows to reference the same DSD (template) but each may define a different type of data.  For example the European Central Bank (ECB) have a Balance Sheet Items DSD which is referenced by three Dataflows: Balance Sheet Items; Balance Sheet Items Statistics (tables 2 to 5 of the Blue Book), Key euro area indicators (BSI).
+</p>
+<p>
+Data is also reported (indirectly) against a Dataflow, so it is possible to impose different restrictions on difference Dataflows using Constraints.
+</p>
+
+<h2 id="hcl">Hierarchical Codelist</h2>
+<p>
+A Hierarchical Codelist (HCL) supports the construction of complex classification hierarchies.  A HCL does not define any new classifications (Codes) instead it references existing codes inside one or more codelists.  
+</p>
+
+<p>
+A simple hierarchy of codes can be created in a Code List and this hierarchy can be visualised to assist in creating a data selection.
+</p>
+
+<p>
+<figure id="img11" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/img11.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/structures/img11.png" style="width:550px"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+</p>
+
+<p>
+The principal restrictions on the hierarchy in a Code List are:
+</p>
+<ul>
+  <li>there can only one hierarchy, though here is no limit to the number of levels in the hierarchy</li>
+  <li>a code can have only one parent</li>
+  <li>the levels cannot be named</li>
+</ul>
+<p>
+The SDMX Information Model also has a construct called the Hierarchical Code List (HCL). This removes these restrictions. The principal features of the HCL are:
+</p>
+<ul>
+  <li>multiple hierarchies to be built</li>
+  <li>a code can be used in more than one hierarchy</li>
+  <li>perhaps most important from a data dissemination perspective, the hierarchies can be built from multiple Code Lists thus allowing codes to be introduced such as grouping codes (e.g. continents or economic communities that group countries taken from a geography code list)
+The Information Model for the HCL is shown schematically below.</li>
+</ul>
+
+<p>
+<figure id="img12" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/img12.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/structures/img12.png" style="width:350px"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+</p>
+
+<p>The <b>HCL</b> can have one or more <b>Hierarchies</b> each comprising <b>Levels</b> (optional) and <b>Hierarchical Codes</b>. The Hierarchical Code can be linked to a Level in the Hierarchy. Note that the Level is used to give semantic information about the Level and does not control the physical hierarchy which is specified by the hierarchy of Hierarchical Codes.</p>
+
+<p>The Hierarchical Code references a Code in a Code List. This Code List can contain a flat list of Codes or a simple hierarchy of Codes. The Hierarchy in the HCL need not reflect the hierarchy in the Code List as the Hierarchical Code references the Code and this is placed in the context its position in the hierarchy of the Hierarchical Code.</p>
+
+<p>The HCL can be an extremely useful construct in a data dissemination system as it can introduce grouping codes and hierarchies that aid data discovery and data query. Importantly, the HCL can be built by organisations that do not maintain the Code Lists used by the DSDs which specify the structure of the datasets. In other words an HCL can be added to the dissemination system without interfering with or changing existing structural metadata that control the content of structure of a data set.</p>
+
+<p>However, whilst the HCL is a part of the SDMX Information Model there is no standard way of relating the HCL to a construct such as a Dimension or Dataflow and it is left to individual systems to make and use these links.</p>
+
+<p>The example below shows the use of an Annotation to create the link to a dataflow. </p>
+
+<p>
+<figure id="img13" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/img13.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/structures/img13.png" style="width:550px"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+</p>
+
+<p>
+Here the Annotation Title is used to specify the SDMX URN of the HCL to be used for the Dataflow and Annotation Type identifies the Dimension for which the HCL is to be used.
+</p>
+<p>
+The use of the SDMX constructs is shown below.
+</p>
+
+
+<p>
+<figure id="img14" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/img14.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/structures/img14.png" style="width:550px"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+</p>
+
+<p>An example of displaying this HCL in a dissemination system is shown below. </p>
+
+<p>
+<figure id="img15" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/img15.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/structures/img15.png" style="width:300px"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+</p>
+
+<p>
+Note that the codes taken from the Topic codelist are shown in the GUI as being not selectable for query, as they do not exist in the DSD and consequently there are no data series. The Hierarchical Code used in this example is used solely for grouping the codes in the Series Code List.
+</p>
+
+<h2 id="msd">Metadata Structure Definition</h2>
+<p>
+A Metadata Structure Definition (MSD) is used to define a template for reporting and disseminating Reference Metadata.
+</p>
+<p>
+Reference Metadata has many forms, it is everywhere, it is authored in many ways using different tools and is consequently stored in many forms, it is often not in a centralised accessible resource and consequently linking the metadata to the construct or data slice to which it relates at a granular level can be challenging.
+</p>
+<p>
+Two major requirements that stem from these challenges are:
+</p>
+<ol>
+ <li>
+	The semantic of the metadata must be capable of being identified. 
+</li>
+<li>The “object” of the metadata (e.g. data point, a structural construct such as a specific Code, a particular context of data such as education statistics for Canada) must be capable of being identified unambiguously.
+</li>
+</ol>
+<p>
+In order to support these two requirements SDMX has a generic and powerful model for supporting this type of metadata. Whilst this supports the metadata requirements, the model can be difficult to understand as it is necessarily quite abstract. So, the way it works is best explained by means of an example.
+</p>
+
+<h4>Example</h4>
+<p>
+Consider the following metadata, which is taken from a live dissemination system which is re-publishing population data originally published by the OECD.</p>
+
+<p>
+<figure id="img8" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/img8.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/structures/img8.png" style="width:350px"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+</p>
+
+<p>
+This is metadata that is collected as part of a data quality framework. It is not an intrinsic part of the data but relates to the data. It is held in a metadata repository. How is this defined and made available as SDMX?
+</p>
+<p>
+The following diagram shows the metadata set and how it is related to the metadata structure definition.
+</p>
+
+<p>
+<figure id="img9" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/img9.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/structures/img9.png" style="width:650px"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+</p>
+
+<p>
+The MSD specifies the types of construct to the which the reported metadata (in a metadata set) can relate to, and the structure (Report Structure) of the metadata (Metadata Report) when reported in a metadata set in terms of the Metadata Attributes for which metadata can be reported.
+</p>
+<p>
+In the example the MSD supports reporting metadata for either a partial key (i.e. one or more dimension values) or a specific code. These are the Metadata Targets in the MSD and can take a coded representation if the allowed values are specific to one Code List or Concept Scheme or other type of SDMX scheme.
+</p>
+<p>
+A separate Metadata Report is required for each Target. So in the example there will be two reports – one for the Code and one for the partial key (population for Germany). Note that both reports can contain metadata for the same set of Metadata Attributes: this is achieved by linking the Report Structure in the MSD to both of the Metadata Targets.
+</p>
+<p>
+In a dissemination system it is common to first indicate the presence of metadata by placing an 'i' next to the text for which the metadata relates and when the user clicks on the 'i' the metadata us revealed.
+</p>
+
+<p>
+<figure id="img10" title="Click to Enlarge">
+  <a href="/img/sdmx/structures/img10.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/structures/img10.png" style="width:650px"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+</p>
+
+<h2 id="metadataflow">Metadataflow</h2>
+<p>
+This is like a <a href="#dataflow">Dataflow</a> but for metadata. The utility of the Metadataflow is identical to that of the Dataflow but relates to reference metadata instead of data. It links to a <a href="#msd">Metadata Structure Definition</a> and the (meta)Data Provider via the <a href="#prov">Provision Agreement</a>. For instance, the <a href="#prov">Provision Agreement</a> can contain a (metadata) registration containing details of the location of the metadata.
+</p>
+
+<h2 id="orgscheme">Organisation Scheme</h2>
+<p>
+There are four types of scheme: maintenance agency, data provider, data consumer, and organisation unit. All except the organisation unit scheme are used by SDMX systems to control access to data reporting, data query, and maintenance of structural metadata.
+</p>
+
+<h2 id="process">Process</h2>
+<p>
+Describes and defines a process in terms of the Process Steps, the inputs and outputs of each Process Step, and the computations that are performed.
+</p>
+
+<h2 id="prov">Provision Agreement</h2>
+<p>
+Links a single Data Provider with a single Dataflow. 
+</p>
+<p>
+In a data collection scenario information can be held for the Provision Agreement such as the allowable (Dimension or Attribute) values that can be reported by the Data Provider (Constraint) and the location from where the data set can be retrieved (Registration). 
+</p>
+<p>
+In a data dissemination scenario information can be held for the Provision Agreement such as the location from where data published by the Data Reporter can be retrieved or queried (Registration), and the actual series key values in the data source (Constraint attached to the Registration). The latter can be used to determine the content of a data source and this can be used to prevent a user querying for data that does not exist in the data source, and to broker queries to the data sources that actually have the data thus supporting a data portal.
+</p>
+
+<h2 id="reportingtax">Reporting Taxonomy</h2>
+<p>
+This is a special type of category scheme whose purpose is to link to a set of data structures that describe the data tables in a statistical publication or data reporting scenario.
+</p>
+
+
+<h2 id="structureset">Structure Set</h2>
+<p>
+A set of structure maps and items scheme maps (code list, category scheme, concept scheme, organisation scheme). The content of these maps is a definition of the correspondence between a source and target scheme or source and target data structure. The purpose of the mapping is to support the collection or dissemination of data or metadata when the dimensionality of the data in the source (e.g. internal) and target (e.g. agreed/harmonised data reporting or query) system is different, or the coding schemes are different. 
+</p>
+
+
+<h2 id="reg">Registration</h2>
+<p>
+A Data Provider can register the location of data and metadata for a specific <a href="#prov">Provision Agreement</a>. This enables systems to discover that new data are available either in support of a data collection process or a data dissemination process.
+</p>                    

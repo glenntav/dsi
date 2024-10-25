@@ -1,0 +1,206 @@
+{{ define "main" }}
+<main role="main" style="padding-top: 5px;">
+
+    <section style="padding-top:25px;">
+        <div class="container">
+            <div class="row text-center" style="align-items: center; justify-content: center;">
+                <div class="col-md-12">
+
+                    <div>
+                        <p style="padding-top:5px;font-size:1.1rem;">A knowledge base for defining and promoting interoperability between the data standards used for official statistics, financial transactions, tax, financial statements, regulatory reporting, banking supervision... </p>
+
+                        <p>ISO 20022 | XBRL | SDMX | Data Point Modelling | DDI | Linked Open Data | RDF | schema.org | Dublin Core </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    
+    
+
+    <section style=" padding-top:10px;">
+        <div class="container">
+            <div class="row" style="align-items: center; justify-content: center;">
+                <div class="col-md-7">
+
+
+                    <div style="padding-top: 20px;">
+                        <span style="font-size: 1.8rem">Problem statement</span><br>
+                        <p style="padding-top:5px;">Many data standards have emerged over recent decades developed by dedicated communities to formalise how data are described, exchanged, published and used. These standards provide common frameworks and languages reducing ambiguity, improving quality and dramatically improving the exchange efficiency of digital information.</p>
+                        <p>The need for interoperability between these standards is increasing rapidly driven by the opportunities to utilise data from other domains, and the valuable insights that can be derived by combining data from diverse sources.</p>
+                        <p>However, it's hard for practitioners to make these standards interoperable without a clear understanding of the whole landscape, what each standard does, and how it can work with others. Most standards are designed for specific use cases. Each has its own terminology with different names used for the same concept, and sometimes the same term having different meanings.</p>
+                        <p>The following are therefore needed to advance interoperability between data standards:
+                        <ul>
+                            <li>An agreed definition of what interoperability means</li>
+                            <li>A comprehensive catalogue of interoperability use cases</li>
+                            <li>A dictionary translating terminology between standards</li>
+                            <li>A feature comparison matrix providing a single overview of all relevant standards</li>
+                        </ul>
+
+                        </p>
+                    </div>
+
+                </div>
+                <div class="col-md-5">
+                    <img class="img-fluid" src="img/index/splash.png" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style=" padding-top:10px;">
+        <div class="container">
+            <div class="row" >
+                <div class="col-md-12">
+
+
+                    <div style="padding-top: 20px;">
+                        <span style="font-size: 1.8rem">Interoperability definition</span><br>
+
+                        <p>In the context of government, finance, and policy, data standards interoperability refers to the seamless sharing, integration, and use of data across diverse systems, agencies, and jurisdictions. By enabling compatibility between different data standards—such as SDMX for statistical data, XBRL for financial reporting, and Linked Open Data for semantic linking—interoperability ensures that data from multiple sources can be efficiently combined, compared, and analyzed. This capacity is essential for informed decision-making and supports diverse use cases, from policy analysis to public transparency.</p>
+
+                        <p>For example, interoperability allows policymakers to combine labor statistics from national agencies with financial data from central banks, enabling a comprehensive view of economic health. It also facilitates international reporting, where datasets like economic indicators and tax data must align across borders for accurate global assessments. By connecting these datasets through interoperable standards, agencies avoid duplication, streamline compliance, and support a unified approach to data-driven initiatives, such as tracking sustainable development goals (SDGs).</p>
+
+                        <p>Ultimately, data standards interoperability strengthens data governance, enriches analysis, and fosters accountability by ensuring that diverse data sources speak the same "language." This integrated framework is key to efficient data use, driving evidence-based policies and fostering public trust through open, accessible data across government and society.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container" id="matrix">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <span style="font-size: 1.8rem">Standards comparison matrix</span><br>
+                </div>
+            </div>
+
+            <div class="row" style="padding-top:10px; align-items: center; justify-content: center;">
+                <div class="col-md-12 text-left">
+
+
+                </div>
+
+            </div>
+        </div>
+        <div class="tab-content">
+            <div class="container tab-pane fade in active " style="opacity:100;" id="features">
+                <div class="row" style="align-items: center; justify-content: center;">
+                    <div class="col-md-12">
+
+                        <table class="table table-sm shadow">
+                            <thead style="color:black; background-color:white;">
+                                <tr>
+                                    <th scope="col" style="width:25%;">Feature</th>
+                                    <th scope="col" style="width:8%" >SDMX</th>
+                                    <th scope="col" style="width:8%" >ISO 20022</th>
+                                    <th scope="col" style="width:8%" >XBRL</th>
+                                    <th scope="col" style="width:8%" >DPM</th>
+                                    <th scope="col" style="width:8%" >DDI</th>
+                                    <th scope="col" style="width:8%" >LOD</th>
+                                    <th scope="col" style="width:8%" >RDF</th>
+                                    <th scope="col" style="width:8%" >schema.org</th>
+                                    <th scope="col" style="width:8%" >Dublin Core</th>
+                                </tr>
+                            </thead>
+                            <tbody id="featureTable">
+
+                                <tr>
+                                    <th rowspan="1">Metamodel</th>
+                                    <td><i class="fal fa-check-square checkbox"></i></td> <!-- SDMX-->
+                                    <td><i class="fal fa-check-square checkbox"></i></td> <!-- ISO20022-->
+                                    <td></td> <!-- XBRL-->
+                                    <td></td> <!-- DPM-->
+                                    <td></td> <!-- DDI-->
+                                    <td></td> <!-- LOD-->
+                                    <td></td> <!-- RDF-->
+                                    <td></td> <!-- schema.org-->
+                                    <td></td> <!-- dublincore-->
+                                </tr>
+
+                                <tr>
+                                    <th rowspan="1">Data serialisation</th>
+                                    <td><i class="fal fa-check-square checkbox"></i></td> <!-- SDMX-->
+                                    <td><i class="fal fa-check-square checkbox"></i></td> <!-- ISO20022-->
+                                    <td></td> <!-- XBRL-->
+                                    <td></td> <!-- DPM-->
+                                    <td></td> <!-- DDI-->
+                                    <td></td> <!-- LOD-->
+                                    <td></td> <!-- RDF-->
+                                    <td></td> <!-- schema.org-->
+                                    <td></td> <!-- dublincore-->
+                                </tr>
+                                
+                                <tr>
+                                    <th rowspan="1">Structural metadata serialisation</th>
+                                    <td><i class="fal fa-check-square checkbox"></i></td> <!-- SDMX-->
+                                    <td><i class="fal fa-check-square checkbox"></i></td> <!-- ISO20022-->
+                                    <td></td> <!-- XBRL-->
+                                    <td></td> <!-- DPM-->
+                                    <td></td> <!-- DDI-->
+                                    <td></td> <!-- LOD-->
+                                    <td></td> <!-- RDF-->
+                                    <td></td> <!-- schema.org-->
+                                    <td></td> <!-- dublincore-->
+                                </tr>
+                                
+                                <tr>
+                                    <th rowspan="1">Standardised taxonomies</th>
+                                    <td></td> <!-- SDMX-->
+                                    <td><i class="fal fa-check-square checkbox"></i></td> <!-- ISO20022-->
+                                    <td></td> <!-- XBRL-->
+                                    <td></td> <!-- DPM-->
+                                    <td><i class="fal fa-check-square checkbox"></i></td> <!-- DDI-->
+                                    <td></td> <!-- LOD-->
+                                    <td></td> <!-- RDF-->
+                                    <td></td> <!-- schema.org-->
+                                    <td></td> <!-- dublincore-->
+                                </tr>                                
+
+                                <tr>
+                                    <th rowspan="1">Message-specific schemas</th>
+                                    <td></td> <!-- SDMX-->
+                                    <td><i class="fal fa-check-square checkbox"></i></td> <!-- ISO20022-->
+                                    <td></td> <!-- XBRL-->
+                                    <td></td> <!-- DPM-->
+                                    <td><i class="fal fa-check-square checkbox"></i></td> <!-- DDI-->
+                                    <td></td> <!-- LOD-->
+                                    <td></td> <!-- RDF-->
+                                    <td><i class="fal fa-check-square checkbox"></i></td></td> <!-- schema.org-->
+                                    <td></td> <!-- dublincore-->
+                                </tr>                 
+
+                                <tr>
+                                    <th rowspan="1">FAIR compliant</th>
+                                    <td></td> <!-- SDMX-->
+                                    <td><i class="fal fa-check-square checkbox"></i></td> <!-- ISO20022-->
+                                    <td></td> <!-- XBRL-->
+                                    <td></td> <!-- DPM-->
+                                    <td><i class="fal fa-check-square checkbox"></i></td> <!-- DDI-->
+                                    <td></td> <!-- LOD-->
+                                    <td></td> <!-- RDF-->
+                                    <td><i class="fal fa-check-square checkbox"></i></td></td> <!-- schema.org-->
+                                    <td></td> <!-- dublincore-->
+                                </tr>                                
+
+    
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+
+
+</main>
+
+{{ end }}

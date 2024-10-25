@@ -1,0 +1,385 @@
+<h1 id="data">Data</h1>
+<h2 id="data-sch">Schematic of the Information Model</h2>
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/data/data1.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/data/data1.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+<p>The dataset must reference to a Data Structure Definition (DSD) either directly or via a Dataflow or Provision Agreement.</p>
+
+<p>Logically the Dataset comprises Series and the Series comprises Observations. Observations are associated to a Time Period for tine series or to any other Dimension (e.g. geography) for non-time series.</p>
+
+<p>Attributes can relate to the Dataset, the Series, an Observation or to a Group. A Group is a partial series key i.e. the value of one or more Dimensions comprising a sub set of the full key.</p>
+
+<p>Depending on the physical format of the datasets the associations depicted by the green lines can be either containers (e.g. Dataset contains Series) or references (Series referenced the Dataset).</p>
+
+
+<h2 id="data-imp">Implementing SDMX Formats</h2>
+
+<p>SDMX has many dataset formats in order to support the various use cases. This could seem to be quite confusing and difficult to implement, but choosing the correct architecture will not only simplify this but it will make it extensible to possible future formats for data and also for non-SDMX formats such as CSV and Excel.</p>
+
+<p>Sdmx Source is an implementation of the SDMX Common Component Architecture developed by Metadata Technology and made available for all to use. The architecture is based on and a faithful representation of the SDMX Information Model. This model is syntax and format independent and adherence to this architecture makes it easy to support a wide variety of formats.</p>
+
+
+
+<h2 id="data-usecase">Use Cases</h2>
+<p>
+The various use cases and the names of the formats in the two major version of SDMX (2.0 and 2.1) are shown in the table below.
+</p>
+
+<div class="table-responsive">
+<table class="table table-striped"> 
+<tbody>
+<tr>
+<td valign="top" ><p><b>Use Case</b></p></td>
+<td valign="top" ><p><b>Version 2.0</b></p></td>
+<td valign="top" ><p><b>Version 2.1</b></p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Single data set xml schema supports all Data Structure Definitions (DSD)</p></td>
+<td valign="top" ><p><b>Generic</b></p>
+
+<p>Restricted to time series</p></td>
+<td valign="top" ><p><b>SDMXDataGenericTimeSeries</b></p>
+
+<p>Restricted to time series</p>
+
+<p><b>SDMXDataGeneric</b></p>
+
+<p>Supports both time series and non-time series</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Time series data set specific to a single DSD</p>
+
+<p>Format can be expressed as xml schema</p></td>
+<td valign="top" ><p><b>Compact</b></p>
+
+<p>Restricted to time series</p></td>
+<td valign="top" ><p><b>SDMXDataStructureSpecificTimeSeries</b></p>
+
+<p>Restricted to time series</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Non-time series data set specific to a single DSD</p>
+
+<p>Format can be expressed as xml schema</p></td>
+<td valign="top" ><p><b>Cross Sectional</b></p></td>
+<td valign="top" ><p><b>SDMXDataStructureSpecific</b></p>
+
+<p>Supports both time series and non-time series</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Validation of dataset using Schema validation</p></td>
+<td valign="top" ><p><b>Utility</b></p></td>
+<td valign="top" ><p>Discontinued</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Users of GESMES/TS</p></td>
+<td valign="top" ><p><b>SDMX-EDI</b></p>
+
+<p>Restricted to time series</p></td>
+<td valign="top" ><p><b>SDMX-EDI</b></p>
+
+<p>Restricted to time series</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Web data dissemination</p>
+
+<p>Combines data and related structural metadata and links to reference metadata</p></td>
+<td valign="top" ><p>Not supported</p></td>
+<td valign="top" ><p><b>SDMX-JSON</b></p>
+
+<p>Supports any type of SDMX data</p></td>
+</tr>
+
+</tbody>
+</table>
+</div>
+
+<p>
+The major difference between the “generic” formats and the “structure specific” formats is shown below.
+</p>
+
+<h1 id="data-format">Data Formats</h1>
+
+<h2 id="data-format-intro">Introduction</h2>
+<p>
+This section describes the various formats for a Dataset in the SDMX specification.  The example for each format described in this section uses data taken from part of the table shown in the screenshot below.
+</p>
+
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/data/data2.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/data/data2.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+<p>
+The data shown in the above image is based on the Data Structure Definition and codelists shown in the image below.  Note that each dataset (with the exception of SDMX-JSON) only carries with it the coded Identifiers, not the code names.  Therefore in order to construct a human readable output the application must have access to the code and concept names which are maintained in the Structural Metadata.
+</p>
+
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/data/data3.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/data/data3.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+
+<h2 id="data-format-generic">Generic Format</h2>
+<h3>Characteristics</h3>
+<ol>
+  <li>
+There is a single XML schema that supports all datasets regardless of the Data Structure Definition (DSD) that defines the allowable content.
+  </li>
+  <li>
+  This original use case for this format was to enable systems to process the data set in a generic way using a single schema. This was useful for processing with XSLT.
+  </li>
+  <li>
+ The schema validation for this format is very weak as the actual data content (series keys, attributes, measures) cannot be validated by the schema processor. The validation requires access to the DSD.
+  </li>
+  <li>
+  This format is the most verbose of all of the SDMX data formats.
+  </li>
+</ol>
+
+
+<h3>Example</h3>
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/data/data4.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/data/data4.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+<h3>Our View</h3>
+<p>
+In order to carry out full validation access to the DSD is required even when the format is “structure specific”. Therefore, from the perspective of validation it does not matter that the format has little inherent support for validation. 
+</p>
+<p>
+The benefit of using this format over the other (less verbose) formats is largely outdated as systems, components, and tools use a more programmatic approach to processing datasets. However, if XSLT is a part of the processing in a system (which may be the case if the datasets to be processed are small) then the Generic format may be the format of choice. 
+</p>
+
+<h2 id="data-format-ss">Structure Specific</h2>
+<h3>Characteristics</h3>
+<p>
+This format combines the characteristic of the Compact and Cross Sectional structures in V 2.0 of the SDMX standard
+</p>
+
+<ol>
+<li>
+Except for the TimeSeries variant of this format any one of or ALL of the Dimensions can be placed at the level of the observation (thus supporting cross-sectional data)
+The TimeSeries variant of this format mandates that this is TIME_PERIOD. 
+
+</li>
+
+<li>
+Multiple measures (specified in the Measure Dimension) can be contained in the Observation.
+</li>
+
+<li>
+This is the most terse XML format for SDMX data.
+</li>
+
+<li>
+An XML schema can be generated from the DSD and Content Constraints.
+</li>
+
+<li>
+The XML schema can be generated to represent the allowed content (Constraint) at the level of the DSD, or Dataflow, or Provision Agreement.
+</li>
+
+<li>
+The generated schema contains the allowed content for each of the Dimensions, Attributes, and Measures as specified in the DSD and any Content Constraint. 
+</li>
+
+<li>
+However,
+  <ul>
+    <li>The schema generation rules places all of the Dimension and Attribute components in XML attributes.</li>
+    <li>There is no distinction in the dataset between the (XML) attributes that are Dimensions and those that are Attributes. </li>
+    <li>Because these XML attributes can be placed in various (XML) elements in the dataset the schema generation rules mandate that all of (XML) attributes generated from DSD Attributes are conditional. </li>
+  </ul>
+</li>
+
+<li>
+The generated schema can be used to validate the dataset using a generic schema validation tool. However, it cannot validate that:
+	<ul>
+    	<li>All mandatory attributes are present (the presence of these depends on whether the dataset is creating new data, updating existing data (and attributes) or deleting data).</li>
+    	<li>There are no duplicate observations.</li>
+    </ul>
+</li>
+
+<li>
+	The consequence of (6) and (7) is that often access to the DSD is required when processing the dataset.
+</li>
+</ol>
+
+<h3>Example</h3>
+<p>
+This example shows TIME_PERIOD at the level of the observation.
+</p>
+
+
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/data/data5.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/data/data5.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+
+<h4>Our View</h4>
+<p>This is the most versatile and most popular data format for those organisations using version 2.1 of the SDMX standard.</p>
+
+<p>As schema validation is relatively slow and non-streaming and as the validation cannot trap all errors, the trend is for a validation engine to implement its own validation logic (including the ability to accept and output streamed data) by accessing the DSD, Dataflow, Provision Agreement and associated Constraints. </p>
+
+<p>The SdmxSource contains the components to build a validation engine.</p>
+
+<h2 id="data-format-compact">Compact</h2>
+
+<h3>Characteristics</h3>
+<ol>
+<li>Supports Time Series only.</li>
+<li>The format is similar to the version 2.1 Structure Specific format where TIME_PERIOD is the Dimension associated at the level of the observation – i.e. the <Series> contains all of the Dimensions except TIME_PERIOD and the TIME_PERIOD is iterated with the observation value at the <Obs> level.</li>
+<li>An XML schema can be generated but, if this is generated from a V 2.0 DSD then this is not as powerful as the schema that can be generated for a version 2.1 DSD and associated Constraints – as the Constraints are not well supported at version 2.0. </li>
+<li>The same validation restrictions apply as for version 2.1 Structure Specific plus the fact that all XML attributes are conditional and so the presence of mandatory SDMX Attributes and Dimensions cannot be validated by the schema processor.</li>
+</ol>
+
+
+
+<h3>Example</h3>
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/data/data6.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/data/data6.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+<h3>Our View</h3>
+<p>
+This is the most versatile and most popular data format for those organisations using version 2.0 of the SDMX standard.
+</p>
+
+<h2 id="data-format-xs">Cross Sectional</h2>
+
+<h3>Characteristics</h3>
+<p>Supports a non-time series representation of the data (though time can be present in the dataset).</p>
+
+<p>The placement of the Dimension and Attributes (with the group, series, observation) is specified in the DSD. This can even be a “flat” representation where all Dimensions and Attributes are presented at the same level as the observation value.</p>
+
+<p>Multiple measures can be specified in the DSD though this is rather complex, as the DSD must declare explicitly the measures and map each to the relevant code list.</p>
+
+<h3>Example</h3>
+
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/data/data7.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/data/data7.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+
+<h3>Our View</h3>
+<p>
+The flexibility offered by the version 2.0 cross sectional format was offset by the complexity of the specification in the DSD. Except for some extreme use cases the format has been superseded by version 2.1 Structure Specific. 
+</p>
+<p>
+This format is not well supported in software tools except for very simple use (e.g. like that shown in the example). For this reason it is recommended not to use this format and to use the version 2.1 Structure Specific format.
+</p>
+
+<h2 id="data-format-utility">Utility</h2>
+<h3>Characteristics</h3>
+<ol>
+<li>Similar to Compact but restricted to new data sets</li>
+<li>Mandatory SDMX Attributes and Dimensions are made mandatory XML attributes</li>
+<li>The most strict type of data format of all the schemas that support validation</li>
+</ol>
+
+<h3>Example</h3>
+<p>
+None. This format has been deprecated and little or no support for it exists in current tools.
+</p>
+
+<h3>Our View</h3>
+<p>
+Do not use this. The schema validation is not 100% and it is restricted to new data only. It is not supported at SDMX version 2.1. 
+Better validation tools exist.
+</p>
+
+
+<h2 id="data-format-sdmxedi">SDMX-EDI</h2>
+<h3>Characteristics</h3>
+<ol>
+<li>
+Supports Time Series only.</li>
+<li>
+Uses the UN/EDIFACT syntax – a format from the 1990s that pre-dated XML.
+</li>
+<li>Is extremely terse</li>
+<li>No generic software for validation, transformation, authoring, editing, navigating, such as that available for XML</li>
+</ol>
+
+<h3>Example</h3>
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/data/data8.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/data/data8.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+<h3>Our View</h3>
+<p>Whilst the syntax is a 1990s syntax, the format is still popular for reporting financial data in the Central Banking community. </p>
+
+<p>However, unless you have a specific requirement to use this format then it is not recommended as the syntax is largely superseded by 21<sup>st</sup> century syntaxes such as XML and JSON.</p>
+
+<p>However, should you need to use the format there are validation and transformation tools that support SDMX-EDI and the SdmxSource has SDMX-EDI reader and writers.</p>
+
+<h2 id="data-format-sdmxjson">SDMX-JSON</h2>
+<h3>Characteristics</h3>
+<ol>
+ <li>
+JSON stands for Java Script Object Notation and this is a representation of the dataset in Java Script that can be processed by JavaScript applications. 
+ <li>
+It was developed by technical specialists under the auspices of the SDMX Technical Working Group.
+ </li>
+ 
+ <li>
+It is designed to be both terse and simple to process by Java Script programmers, and therefore for use in web-based application such as data dissemination.
+ </li>
+ 
+ <li>
+The textual representation of the dataset components (Concepts and Codes) is presented in addition to its coded form. Therefore there is no need to access independently the DSD in order to process the datasets for visualisation.
+ </li>
+ 
+ <li>
+The current status is that the format has been implemented by a number of organisations (including Metadata Technology) and is going through acceptance in the SDMX standards process.
+ </li>
+</ol>
+
+<h3>Example</h3>
+<strong>Snippet of observation values</strong>
+
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/data/data9.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/data/data9.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+
+<strong>Snippet of structural metadata values</strong>
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/data/data10.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/data/data10.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>

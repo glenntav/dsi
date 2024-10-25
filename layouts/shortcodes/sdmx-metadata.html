@@ -1,0 +1,130 @@
+<h1 id="ref-metadata">SDMX Reference Metadata</h1>
+<h2 id="metadata-sch">Schematic of the Information Model</h2>
+
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/metadata/img1.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/metadata/img1.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+
+<p>The Metadata Set must reference to a Metadata Structure Definition (MSD) either directly or via a Metadata Flow or Provision Agreement.</p>
+
+<p>Logically the Metadata Set comprises Metadata Reports and the Metadata Reports comprise Metadata Attributes. The Metadata Report comprise the components required to identify the object to which the metadata relate (Metadata Target). This is typically a partial key of a series, a full key of a series, the agency, version, and id of structure component such as a Code or Concept.</p>
+
+<p>The Metadata Attributes relate to the Metadata Target. </p>
+
+<p>As these metadata (called reference metadata in SDMX) are typically authored or reported at different timescale to the data, by metadata experts rather than data experts, they are often stored in a different database from the data, usually known as a “metadata repository”.</p>
+
+<h2 id="metadata-formats">SDMX Formats</h2>
+
+<p>SDMX has two Metadata Set formats in order to support two use cases. </p>
+
+<h3>Use Cases</h3>
+
+<p>The various use cases and the names of the formats in the two major version of SDMX (2.0 and 2.1) are shown in the table below.</p>
+
+
+<div class="table-responsive">
+<table class="table table-striped"> 
+<tbody>
+<tr>
+<td valign="top" ><p><b>Use Case</b></p></td>
+<td valign="top" ><p><b>Version 2.0</b></p></td>
+<td valign="top" ><p><b>Version 2.1</b></p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Single metadata set xml schema supports all Metadata Structure Definitions (DSD)</p></td>
+<td valign="top" ><p><b>Generic Metadata</b></p></td>
+<td valign="top" ><p><b>Generic Metadata</b></p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Metadata set specific to a single MSD</p></td>
+<td valign="top" ><p><b>Metadata Report</b></p></td>
+<td valign="top" ><p><b>Metadata Report</b></p></td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+
+<p>
+The major difference between the “generic” formats and the “structure specific” formats is shown below.
+</p>
+
+<h2>Format Choices</h2>
+
+<h3>Example Metadata Set</h3>
+<p>
+In all of the examples below the data in the following table is used.
+</p>
+
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/metadata/img2.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/metadata/img2.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+
+<h3>Generic Format</h3>
+<h4>Characteristics</h4>
+
+<ol>
+  <li>
+  There is a single XML schema that supports all Metadata Sets regardless of the MSD that defines the allowable content.
+  </li>
+  <li>
+  The schema validation for this format is very weak as the actual metadata data content (Metadata Attributes) cannot be validated by the schema processor. The validation requires access to the DSD.
+  </li>
+  <li>
+  However, as the metadata are, in the main, textual this is not a serious weakness.
+  </li>
+  <li>
+ This format is the most verbose of all of the SDMX metadata formats.
+  </li>
+</ol>
+
+
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/metadata/img3.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/metadata/img3.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+
+<h4>Our View</h4>
+<p>
+In general reference metadata is textual and the metadata sets are small in size compared to the dataset. Therefore, there is little value in using an MSD-specific format. The generic format is easy to create and to use in combination with the MSD that describes its structure
+</p>
+
+
+<h3>Structure Specific</h3>
+<h4>Characteristics</h4>
+<ol>
+<li>An XML schema can be generated from the MSD and Content Constraints.</li>
+<li>The XML schema can be generated to represent the allowed content (Constraint) at the level of the DSD, or Dataflow, or Provision Agreement.</li>
+<li>The generated schema contains the allowed content for the Metadata Attributes, as specified in the MSD and any Content Constraint. </li>
+<li>The generated schema can be used to validate the Metadata Set using a generic schema validation tool. 
+</li>
+</ol>
+
+<h4>Example</h4>
+<figure  title="Click to Enlarge">
+  <a href="/img/sdmx/metadata/img4.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/metadata/img4.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+<p>Unlike data, the message size is not a factor for reference metadata which tends to be measured in kilobytes and not megabytes.</p>
+
+<p>Whilst the MSD-specific schema will validate the content of coded Metadata Attributes or length restrictions for text, the trend for a modern validation engine is to implement its own validation logic by accessing the MSD, Dataflow, Provision Agreement and associated Constraints. </p>
+
+<p>Therefore there is no real differentiating factor that would point to a preference between the generic and the MSD-specific format.</p>
+

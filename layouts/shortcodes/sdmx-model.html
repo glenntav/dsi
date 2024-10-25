@@ -1,0 +1,266 @@
+<h1 id="infomodel">Brief Overview of the SDMX Information Model</h1>
+
+<h2 id="pd">The Problem Domain</h2>
+
+<h3>Brief Problem Statement</h3>
+<p>
+A statistical system comprises many sub systems and components. A major issue with many computer systems, and statistical systems are no exception, is that the systems and therefore the software is built in silos or, at best, are built with tightly coupled, non-reusable, software components. 
+</p>
+<p>
+Consider the following very simple process flows, one for data import to a database, and one for data dissemination.
+</p>
+
+<p><b>Data Import</b></p>
+<figure id="img1" title="Click to Enlarge">
+  <a href="/img/sdmx/model/img1.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/model/img1.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+<p><b>Data Dissemination</b></p>
+<figure id="img2" title="Click to Enlarge">
+  <a href="/img/sdmx/model/img2.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/model/img2.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+<p>
+Here are some possible drawbacks in the systems currently supporting these processes.
+</p>
+
+<h4>Database Design</h4>
+<p>
+A database schema is designed internally which can hold all the data that the department works with. The department decide to adopt an Oracle database, and the database tables are tailored to store the specific data relevant to the domain the department works with. There is no need to support more than 2 languages, so each table which contains specific labels for each of the languages wherever these appear in the tables
+</p>
+<p>
+There is one large database table containing observation values for each dataset. There are many linked database tables which contain further information about the observations. The linked tables are used to facilitate filtering when querying the database for data and the information in these tables are required when constructing query results to the user.
+</p>
+
+<h4>Data Import</h4>
+<p>
+The department receives data from many providing organisations, and as such the data format of each dataset is dependent on the sending organisation. A data importer is written to support each data offering, in some situations mapping tables need to be defined which map the client’s classifications to the ones used internally. There are a set of validation rules defined to ensure the data conforms to what is expected. Each importer implements its own validation logic. There is also additional validation once the data is in the database.
+</p>
+
+<h4>Disseminating Data</h4>
+<p>To disseminate data, the business analysis team define which types of query are required and the development team write database queries specific to the defined use cases which extract the relevant dataset. There is no formal model for data, so the output syntax is dependent on the recipient of the data. If a new client requires a different output format, the development team either write new database queries, or they write a transformation from an existing format.</p>
+
+<p>The website is built upon APIs defined by the business analysis team, with web designers and backend developers working closely to build the web pages. As more use cases evolve the development team write new APIs to support the website.</p>
+
+<p>Internally, other departments within the organisation are given direct access to the database tables. These departments write their own query logic based on the table structure, in order to get the data into their own systems.</p>
+
+<h4>System Maintenance</h4>
+<p>This system combines both the data, with the metadata required to understand the data. Internal applications are written to give users access to lookup information such as classifications, and other users are allowed to modify and add information.</p>
+
+<p>In some situations there is no user interface for certain types of information, so users query the database directly. In some instances the only way to modify certain types of metadata is by modifying the database directly.</p>
+
+
+<h4>What is Wrong with this Approach?</h4>
+<p>This approach provides a good example of a system which is highly coupled at almost every possible point. A highly coupled system means that changing one aspect of the system has repercussions across the system as a whole. Highly coupled systems have low resilience to change and high maintenance costs in terms of both time and money.</p>
+
+<p>The first example of high coupling is the database schema itself, whose design is coupled to the known datasets and uses cases at the time of design. Any change to the schema will impact the website, all outputs for each client, and as this database is queried by other departments it will also affect all internal clients. The internal clients are also coupled to Oracle platform.</p>
+
+<p>The backend APIs are coupled to the current requirements of the website and maintenance tool, as the database queries have been built to service these APIs they too are coupled to the current requirements. As the website is constructed by directly calling backend APIs, the website is coupled to the programming language that the system is written in. Any changes to requirements impacts these APIs, any changes to the APIs impacts the website.</p>
+
+<p>Each importer is coupled to each client’s data format. If the client changes their data format, this impacts the processor specific to that client. Having specific import logic per format leads to bugs in some importers which are not present in others. This in turn leads to a high testing overhead as there is little shared logic between each importer. When new import formats are required, the maintenance burden is increased.</p>
+
+<p>There is no internal model which can lead to ad hoc queries being written as required to support internal clients, external clients, the website, and maintenance application. This leads to many APIs with duplication of logic, which over time, as the code becomes less structured, results in spaghetti code. The application becomes more complex to maintain, and much more prone to the introduction of bugs, as changes to one part of the application has an undesirable impact on a seemingly unrelated part of the application.</p>
+
+<p>There is no provision to change the database platform, so if the organisation favours SQL Server over Oracle, there is a huge maintenance burden on porting over all the query logic, migration scripts need to be written to migrate the data, and all of the software code needs to be modified.</p>
+
+<p>The application written to view and maintain the supporting metadata is a maintenance burden, and coupled to both the database platform and design. Introducing new types of metadata to store, or modifying current metadata requires not only database changes, but modification to the maintenance application.</p>
+
+<p>There is no provision to support data for new data domains. If the department is required to store a new type of data, both code changes and database modifications are required. Due to the high coupling of the system, these changes require a lot of additional testing.</p>
+
+<p>Queries to the database require a lot of table joins, which leads to poor performance. As the website, maintenance application, external and internal clients are coupled to the table structure, it is not possible to improve performance easily.</p>
+
+<h4>Is this Typical?</h4>
+<p>
+Whilst the above paints an almost apocalyptic picture of what can happen, and we are not suggesting that all of these situations are present in any one system, we have observed all of these aspects in systems in which we have given consulting advice on a (SDMX) model-driven approach.
+</p>
+<p>
+There is a different way of designing a system for collection, reporting, and dissemination of both data and metadata, and integration with data analysis tools used by the organisation. This is to use a model-driven approach and a component architecture that supports the model.
+</p>
+
+<h2 id="md">A Model-Driven Approach</h2>
+<p>By harmonising the language used to describe data, and associated metadata, it is possible to integrate disparate data sources enabling software applications to be able to access diverse datasets using a common language regardless of the software products used to store the data.</p>
+
+<p>An SDMX solution introduces a generic, yet powerful internal model of data and associated metadata. The SDMX Information model was built by analysing the internal processes of many statistical agencies and central banks, and realising that even though each of their applications was different, they all did the same thing. Being able to describe the data and metadata supporting any statistical application in a generic way, leads to the ability to develop generic software modules being built which can process data in any statistical domain in a common way.</p>
+
+<p>The SDMX Information Model is a data model. it does not in itself specify behaviour (e.g. what behaviour should a system have when processing a Code), though the various specifications may include specific high level behaviour such as submitting structural metadata to an SDMX Registry.</p>
+
+<p>Fundamentally, a data model specifies the scope of the system or standard in terms of:</p>
+<ul>
+  <li>Information to be shared between processes or organisations in terms of the information objects (e.g. Code) and the content of the object (e.g. code id, code label)</li>
+  <li>Relationships between the information objects</li>
+</ul>
+
+<p>In order for the model to be useful it must have an implementation. For instance, there must be a way of representing a specific code list and its codes in a specific syntax such as XML. There can be, and in SDMX there are, more than one way of representing specific instances of the information objects. This is an important point and it is a major benefit of having an information model. Different syntax representations can be supported and if the system architecture is designed well there is no need for most of the system components to be concerned with the syntax implementations: the components are built to understand the model objects, not the syntax in which these objects are imported or exported.</p>
+
+<p>This is, in essence, the model driven approach to system engineering. Clearly for such a system to work the objects in the model must be realised as objects that do have behaviour. Software components can then be built that implement this behaviour (e.g. return the Id and Name of a Code). Importantly, this behaviour is, for the most part, context free i.e. the component returning the Code Id and Code Name does not know why these pieces of information are required and has no need to know. This component is just doing its job to service Codes. </p>
+
+<p>Therefore a model driven approach to system engineering results in re-usable components that are de-coupled and cohesive: the system is not brittle and it easily maintained and enhanced. </p>
+
+<p>SDMX has a Common Component Architecture based on the SDMX Information Model and an open source implementation of this architecture. This is available at <a href="http://www.sdmxsource.org/" target="_blank">www.sdmxsource.org</a>. </p>
+
+<figure id="img4" title="Click to Enlarge">
+  <a href="/img/sdmx/img/model/img4.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/model/img4.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+<p>The <b>Dataflow</b> is a pivotal construct in the SDMX Information Model: it is the construct for which data is both reported against, and disseminated against. It makes use of the structural information defined by the Data Structure Definition, but enables for further restrictions to be specified for the allowable content (<b>(Valid) Content Constraint</b>)</p>
+
+<p>The <b>Data Structure Definition (DSD)</b> is a fundamental structure: it defines the valid content of a data set in terms of its dimensionality, variables, concepts, and valid content for the variables (e.g. code list or other data type)</p>
+
+<p>The <b>Provision Agreement</b> contains information about the supply of data by one <b>Data Provider</b> for one <b>Dataflow</b>. In a data collection environment it can contain a link to a <b>Valid Content</b> <b>Constraint</b> that further constrains the allowed values that can be reported by a Data Provider. In a Data Dissemination environment is can link to a Registered Data Source that identifies the location of the data and how it can be retrieved (e.g. SDMC query), and the content of the data source (<b>(Actual) Content</b> <b>Constraint).</b></p>
+
+<p>Each of the <b>Dataflows</b> can be connected to one or more <b>Categories</b> and any one Category can be connected to zero or more Dataflows. This connection supports data discovery by organised topics such as Demography, Census, Health, Finance.</p>
+
+
+<h2 id="uc">Some Use Cases Supported by the Model</h2>
+
+<h3>Data Collection</h3>
+<figure id="img5" title="Click to Enlarge">
+  <a href="/img/sdmx/model/img5.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/model/img5.png"  class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+<h3>Database Load</h3>
+<figure id="img6" title="Click to Enlarge">
+  <a href="/img/sdmx/model/img6.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/model/img6.png" class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+<h3>Data Dissemination</h3>
+<figure id="img7" title="Click to Enlarge">
+  <a href="/img/sdmx/model/img7.png" data-lightbox="lightbox" data-title="">
+	<img src="/img/sdmx/model/img7.png" class="img-responsive"></img>
+  </a>
+  <figcaption class="caption"></figcaption>
+</figure>
+
+
+<h2 id="proc">SDMX Support for Processes</h2>
+ <div class="table-responsive">
+<table class="table table-striped"> 
+<tbody>
+<tr>
+<th valign="top" ><p><b>Process</b></p></th>
+<th valign="top" style="width:150px" ><p><b>Constructs</b></p></th>
+<th valign="top" ><p><b>Role</b></p></th>
+</tr>
+
+<tr>
+<td valign="top" ><p>Register data available</p></td>
+<td valign="top" ><p>Provision Agreement</p>
+
+<p>Data Registration</p></td>
+<td valign="top" ><p>Data collection can be automated by data reporters registering the location of new data to be reported. </p>
+
+</td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Receive/Retrieve data</p></td>
+<td valign="top" ><p>Provision Agreement</p>
+
+<p>Data Registration</p></td>
+<td valign="top" ><p>An application can be informed of new registration and the data can be retrieved.</p>
+
+<p>Alternatively, the data are sent directly to the data collector (e.g. e-mail etc.).</p>
+
+<p>In both cases associating the data to a Provision Agreement will aid identification of the data provider.</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Read dataset</p></td>
+<td valign="top" ><p>Data Structure Definition and related Concepts and Code lists</p></td>
+<td valign="top" ><p>The data can be in a variety of different formats and a reader specific to the format is required. </p>
+
+<p>The reader may require access to the Data Structure Definition in order to perform this function.</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Data validation</p></td>
+<td valign="top" ><p>Data Structure Definition and related Concepts and Code lists</p>
+
+<p>Dataflow and related (valid) Content Constraint</p>
+
+<p>Provision Agreement and (valid) Content Constraint</p></td>
+<td valign="top" ><p>Validate data using the constrained DSD specification of the Dataflow</p>
+
+<p>Validate data using the additional constraints of the Provision Agreement</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Create database tables</p></td>
+<td valign="top" ><p>Data Structure Definition</p></td>
+<td valign="top" ><p>Database tables can be created automatically from the metadata in the Data Structure Definition.</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Transform/Map</p></td>
+<td valign="top" ><p>Data Structure Definition and related Concepts and Code lists</p>
+
+<p>Dataflow</p></td>
+<td valign="top" ><p>Input data may need to be mapped in terms of its dimensionality and/or coding schemes used.</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Discover data</p></td>
+<td valign="top" ><p>Category Scheme</p>
+
+<p>Concepts</p>
+
+<p>Data Providers</p>
+
+<p>Dataflow</p></td>
+<td valign="top" ><p>To enable the building of high level data discovery allowing the user to drill down to the broad data topic of data of interest (Dataflow).</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Query data sources</p></td>
+<td valign="top" ><p>Data Structure Definition and related Concepts and Code lists</p>
+
+<p>Actual Content Constraint</p>
+
+<p>Hierarchical Code List</p></td>
+<td valign="top" ><p>To enable the building of search criteria that will bring back the data required. </p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Query metadata sources</p></td>
+<td valign="top" ><p>Metadata Structure Definition</p>
+
+<p>Metadata Set</p></td>
+<td valign="top" ><p>Query for, retrieve, and unite metadata in the metadata set to the data points or structural metadata points to which the metadata relate.</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Visualise data</p></td>
+<td valign="top" ><p>Data Structure Definition and related Concepts and Code lists</p>
+
+<p>Metadata Structure Definition</p></td>
+<td valign="top" ><p>Data and related metadata can be visualised as tables, graphs, maps. This is made possible with the structural metadata. For instance, the data is highly coded whereas the visualisation will use the code labels using the chosen language variant. Pivoting tables is simple as the logical dimensional structure is known: this logical structure is not tied to a specific representation of the data.</p></td>
+</tr>
+
+<tr>
+<td valign="top" ><p>Export</p></td>
+<td valign="top" ><p>Data Structure Definition and related Concepts and Code lists</p>
+
+<p>Metadata Structure Definition</p>
+
+<p>Metadata Set</p></td>
+<td valign="top" ><p>Make the data and related metadata available in the format requested by the user. The data and metadata writer will require access to the data and metadata structures to achieve this.</p></td>
+</tr>
+
+</tbody>
+</table>
+</div>
