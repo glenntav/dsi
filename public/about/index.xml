@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Abouts on Home</title>
+    <link>http://localhost:1313/about/</link>
+    <description>Recent content in Abouts on Home</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 17 Aug 2022 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/about/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Contact Metadata Technology</title>
+      <link>http://localhost:1313/about/contact/</link>
+      <pubDate>Wed, 17 Aug 2022 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/about/contact/</guid>
+      <description>&lt;section style=&#34;padding-top: 500px;&#34;&gt;&#xD;&#xA;            &lt;div class=&#34;container&#34;&gt;&#xD;&#xA;&#xD;&#xA;                &lt;div class=&#34;row&#34; style=&#34;padding-top:30px; padding-bottom: 80px;&#34;&gt;&#xD;&#xA;                    &lt;!--                    Only display this div if md or larger--&gt;&#xD;&#xA;                    &lt;div class=&#34;col-md-12 text-center d-none d-md-block&#34; style=&#34;padding-top:50px; &#34;&gt;&#xD;&#xA;                        &lt;span style=&#34;font-size:3.0rem;font-weight:200;&#34;&gt;info@datastandardsinteroperability.org&lt;/span&gt;&#xD;&#xA;                        &lt;button class=&#34;btn&#34; style=&#34;background-color: #ffffff00;&#34; data-clipboard-text=&#34;info@metadatatechnology.com&#34; data-toggle=&#34;tooltip&#34; title=&#34;Copy to clipboard&#34;&gt;&#xD;&#xA;                            &lt;i class=&#34;fas fa-clipboard&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;&#xD;&#xA;                        &lt;/button&gt;&#xD;&#xA;                    &lt;/div&gt;&#xD;&#xA;&#xD;&#xA;                    &lt;div class=&#34;col-md-12 text-center d-md-none&#34; style=&#34;padding-top:50px; &#34;&gt;&#xD;&#xA;                        &lt;span style=&#34;font-size:1.1rem;&#34;&gt;info@datastandardsinteroperability.org&lt;/span&gt;&#xD;&#xA;                    &lt;/div&gt;&#xD;&#xA;                &lt;/div&gt;&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;            &lt;/div&gt;&#xD;&#xA;        &lt;/section&gt;</description>
+    </item>
+  </channel>
+</rss>
