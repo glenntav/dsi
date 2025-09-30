@@ -9,7 +9,7 @@
 
 ## Scalability
 - Packaging VTL | as Transformation Schemes | & using FMR as a VTL repo | means | business logic | can be decoupled from | data processing mechanics
-- Key point | this separation of concerns | makes | data ops more scalable
+- This separation of concerns | makes | data ops more scalable
 - Business rules & data structures | reused across multiple processes | reducing duplication | & promoting modular, composable pipelines
 - Also benefits for | external data collection
 - Using this model | all reporters | have instant access | collector's VTL business rules
