@@ -8,9 +8,10 @@
 - FMR | Free | Open source | SDMX *object* repository
 
 ## Scalability
-- Packaging VTL | as Transformation Schemes | & using FMR as a VTL repo | means | business logic | can be decoupled from | data processing mechanics
+- Packaging VTL as Transformation Schemes | & using FMR as a VTL repo | means | business logic | can be decoupled from | data processing mechanics
 - This separation of concerns | makes | data ops more scalable
-- Business rules & data structures | reused across multiple processes | reducing duplication | & promoting modular, composable pipelines
+- Business rules & data structures | reused across multiple processes
+- This reduces duplication | & promotes modular, composable pipelines
 - Also benefits for | external data collection
 - Using this model | all reporters | have instant access | collector's VTL business rules
 - That means | use vtlengine & pysdmx | programmatically check data | before submission | guaranteeing integrity | eliminating propagation of bad data 
